@@ -5,6 +5,7 @@ soma = 0
 
 for i in range(inicio, fim, 1):
     soma = soma + i
-    print(soma)
+    #print(soma)
 
 print('A soma total é %d' % soma)
+#aqui o fim do intervalo não entra na soma
