@@ -4,7 +4,7 @@ numeroMagico = random.randint(0, 250)
 b = bool
 b = True
 erro = 0
-print(numeroMagico)
+#print(numeroMagico)
 while b:
     valor = int(input('Digite um valor'))
 

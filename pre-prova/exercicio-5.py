@@ -13,7 +13,7 @@ while b:
     if repetido:
             lista = []
             for i in range(5):
-                valor = random.randint(1,10)
+                valor = random.randint(1,60)
                 lista.append(valor)
             #print(lista)
             repetido = False
