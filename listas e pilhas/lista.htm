@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lista</title>
+</head>
+    <style type="text/css">
+        #conteudo {
+            
+            left:12px; 
+            top:58px; 
+            width:715px; 
+            height:211px;
+            background-color: #F781BE;
+        }
+        .body{
+            align-items: center;
+            background-color: #F5A9D0;
+            width: 50%;
+            height: 85vh;
+            margin:auto;
+            padding: 25px;
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif; 
+            display: flex;
+            flex-direction: column;
+        }
+        .button{
+            background-color: #fff;
+            border: none;
+            height: 30px;
+            width: 150px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: #000;
+            font-size: 15px;
+    
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        form{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+        input{
+            height: 40px;
+            border-radius: 30px;
+            padding: 0 16px;
+            background: #fff;
+            border: 1px solid #a8a8b3;
+        }
+        label{
+            font-size: 15px; 
+        }
+        .input{
+            padding-bottom: 15px;
+        }
+    </style>
+
+<script>
+
+function setarCampo(){
+	formLista.elemento.value = "";
+	formLista.elemento.focus();
+}
+
+var qtdElementos = 0;
+
+function estouro_lista(qtd, tipo){
+	if ((tipo == 'push') && (qtd == 10)){
+		alert('A lista está cheia!!!');
+		return false;
+	}
+	if ((tipo == 'pop') && (qtd == 0)){
+		alert('A lista está vazia!!!');
+		return false;
+	}
+	return true;
+}
+
+function verificaPontoVirgula(elemento){
+	var pos = elemento.indexOf(';'); // pode ser trocado por includes, só que includes retorna true/false
+	if (pos != -1) {
+		alert("O valor possui ; ");  // ; é o separador de elementos da pilha, se colocar elemento com ; vai ta adicionando de 2 de uma vez
+		return false;
+	}
+	return true;
+}
+
+function colocarElemento(elemento, posicao){
+	if (estouro_lista(qtdElementos, 'push')){
+		if (verificaPontoVirgula(elemento)){
+			if (qtdElementos == 0) {
+				formLista.lista.value = elemento  // coloca o elemento no Form -> input com name text -> valor
+			}else if (posicao ==0){
+                formLista.lista.value = elemento + ";" + formLista.lista.value
+            }
+            else{
+                var str = formLista.lista.value;
+                var	lista = str.split(";"); // divide a lista pelo separador ; fazendo um vetor de varias posições
+                
+                formLista.lista.value = " ";
+                lista.splice(posicao, 0, elemento);
+                console.log(lista);
+                for (index = 0; index < lista.length ; index++){ // refaz o valor de pilha, só que sem o ultimo, porque o length é -1
+                    if (index == 0){
+                        formLista.lista.value = lista[index];
+                    }else{
+                        formLista.lista.value += ";"+lista[index];
+                        console.log('teste');
+                    }
+                }
+				//formPilha.pilha.value += ";"+elemento; // mesma coisa só que coloca um ; para separar elementos
+			}
+			qtdElementos += 1;
+		}
+	}
+	mostrarLista();	
+}
+
+function tirarElemento(elemento){
+	if (estouro_lista(qtdElementos, 'pop')){
+		var str = formLista.lista.value;
+		var	lista = str.split(";"); // divide a lista pelo separador ; fazendo um vetor de varias posições
+		
+		formLista.lista.value = " ";
+        lista.splice(lista.indexOf(elemento), 1);
+		for (index = 0; index < lista.length; index++){ // refaz o valor de pilha, só que sem o ultimo, porque o length é -1
+			if (index == 0){
+				formLista.lista.value = lista[index];
+			}else{
+				formLista.lista.value += ";"+lista[index];
+			}
+		}
+		qtdElementos -= 1;
+	}
+	mostrarLista();
+}
+
+function mostrarLista(){
+	var str = formLista.lista.value; // auxiliar
+	var retorno = "A quantidade de elementos da lista eh: "+qtdElementos; // retorno é um codigo html sendo criado
+	retorno += "<br><table width='500' border='0'>";
+	retorno += "<tr><td width='104'>Posi&ccedil;&atilde;o</td>";
+	for (i = 1; i <= 10; i++){
+		retorno += "<td width='35'><div align='center'><strong>"+i+"</strong></div></td>"; // coloca numa tabela TD (cada celula) um valor 
+	}
+	retorno += "</tr><tr><td>Elemento</td>";
+	
+	if (str != ""){
+		var lista = str.split(";");
+		if (qtdElementos > 0){
+			for (index = 0; index < lista.length; index++) {
+				posicao = index + 1;
+				retorno += "<td><div align='center'>";
+				retorno += ""+lista[index]+"</div></td>"; // printa os elementos da tela
+			}
+			while (posicao < 10){
+				retorno += "<td><div align='center'></div></td>";// preenche o resto da tabela com elementos vazios
+				posicao += 1;
+			}
+		}
+		retorno += "</tr></table>";
+		document.getElementById("conteudo").innerHTML = retorno;
+	}			
+	setarCampo();
+}
+</script>
+
+<body onFocus="setarCampo()" class="body">
+
+	<form name="formLista"  method="post" action="">
+		<input type="hidden" name="lista">
+        <div class="input">
+            <label>Elemento</label>
+            <input type="text" name="elemento" id="elemento">   
+        </div>
+        <div class="input">
+            <label>Posição</label> 
+            <input type="text" name="posicao" id="posicao">
+        </div>
+		<input type="button" name="Inserir" value="Adicionar na lista" class="button" placeholder="Elemento"
+			onClick="colocarElemento(document.getElementById('elemento').value, document.getElementById('posicao').value );"><!--Na função quando clicar, ele filtra o valor de Id do campo, e popula o 
+			parametro da função-->
+		<input type="button" name="Retirar" value="Tirar da lista" class="button" placeholder="Posição"
+			onClick="tirarElemento(document.getElementById('elemento').value);">
+	</form>
+		<div id="conteudo">
+		</div>
+
+</body>
+</html>

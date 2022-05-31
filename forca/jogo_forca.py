@@ -249,7 +249,7 @@ ScreenManager:
 		Label:
 			size_hint: (.5, .07)
 """
-
+ 
 # tela de inicio com o botãozinho
 class Inicio(Screen):
 	def jogar(self):

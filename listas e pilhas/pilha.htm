@@ -1,0 +1,169 @@
+<html>
+<head>
+<title>Pilhas</title>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pilhas</title>
+</head>
+
+<script>
+
+function setarCampo(){
+	formPilha.elemento.value = "";
+	formPilha.elemento.focus();
+}
+
+var qtdElementos = 0;
+
+function estouro_pilha(qtd, tipo){
+	if ((tipo == 'push') && (qtd == 10)){
+		alert('A pilha está cheia!!!');
+		return false;
+	}
+	if ((tipo == 'pop') && (qtd == 0)){
+		alert('A pilha está vazia!!!');
+		return false;
+	}
+	return true;
+}
+
+function verificaPontoVirgula(elemento){
+	var pos = elemento.indexOf(';'); // pode ser trocado por includes, só que includes retorna true/false
+	if (pos != -1) {
+		alert("O valor possui ; ");  // ; é o separador de elementos da pilha, se colocar elemento com ; vai ta adicionando de 2 de uma vez
+		return false;
+	}
+	return true;
+}
+
+function colocarElemento(elemento){
+	if (estouro_pilha(qtdElementos, 'push')){
+		if (verificaPontoVirgula(elemento)){
+			if (qtdElementos == 0) {
+				formPilha.pilha.value = elemento  // coloca o elemento no Form -> input com name text -> valor
+			}else{
+				formPilha.pilha.value += ";"+elemento; // mesma coisa só que coloca um ; para separar elementos
+			}
+			qtdElementos += 1;
+		}
+	}
+	mostrarPilha();	
+}
+
+function tirarElemento(){
+	if (estouro_pilha(qtdElementos, 'pop')){
+		var str = formPilha.pilha.value;
+		var	pilha = str.split(";"); // divide a lista pelo separador ; fazendo um vetor de varias posições
+		
+		formPilha.pilha.value = " ";
+		for (index = 0; index < pilha.length - 1; index++){ // refaz o valor de pilha, só que sem o ultimo, porque o length é -1
+			if (index == 0){
+				formPilha.pilha.value = pilha[index];
+			}else{
+				formPilha.pilha.value += ";"+pilha[index];
+			}
+		}
+		qtdElementos -= 1;
+	}
+	mostrarPilha();
+}
+
+function mostrarPilha(){
+	var str = formPilha.pilha.value; // auxiliar
+	var retorno = "A quantidade de elementos da pilha eh: "+qtdElementos; // retorno é um codigo html sendo criado
+	retorno += "<br><table width='500' border='0'>";
+	retorno += "<tr><td width='104'>Posi&ccedil;&atilde;o</td>";
+	for (i = 1; i <= 10; i++){
+		retorno += "<td width='35'><div align='center'><strong>"+i+"</strong></div></td>"; // coloca numa tabela TD (cada celula) um valor 
+	}
+	retorno += "</tr><tr><td>Elemento</td>";
+	
+	if (str != ""){
+		var pilha = str.split(";");
+		if (qtdElementos > 0){
+			for (index = 0; index < pilha.length; index++) {
+				posicao = index + 1;
+				retorno += "<td><div align='center'>";
+				retorno += ""+pilha[index]+"</div></td>"; // printa os elementos da tela
+			}
+			while (posicao < 10){
+				retorno += "<td><div align='center'></div></td>";// preenche o resto da tabela com elementos vazios
+				posicao += 1;
+			}
+		}
+		retorno += "</tr></table>";
+		document.getElementById("conteudo").innerHTML = retorno;
+	}			
+	setarCampo();
+}
+</script>
+<style type="text/css">
+	#conteudo {
+		
+		left:12px; 
+		top:58px; 
+		width:715px; 
+		height:211px;
+		background-color: #F5BCA9;
+	}
+	.body{
+		align-items: center;
+		background-color: #F6D8CE;
+		width: 50%;
+		height: 85vh;
+		margin:auto;
+		padding: 25px;
+		border-radius: 15px;
+		font-family: 'Poppins', sans-serif; 
+		display: flex;
+		flex-direction: column;
+	}
+	.button{
+		background-color: #fff;
+		border: none;
+		height: 30px;
+		width: 150px;
+		border-radius: 30px;
+		cursor: pointer;
+		color: #000;
+		font-size: 15px;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+	form{
+		display: flex;
+		flex-direction: row;
+		gap: 10px;
+	}
+	#elemento{
+		height: 40px;
+        border-radius: 30px;
+        padding: 0 16px;
+        background: #fff;
+        border: 1px solid #a8a8b3;
+	}
+</style>
+
+<body onFocus="setarCampo()" class="body">
+
+	<form name="formPilha"  method="post" action="">
+		<input type="hidden" name="pilha">
+		<input type="text" name="elemento" id="elemento">
+		<input type="button" name="Inserir" value="Adicionar na pilha" class="button"
+			onClick="colocarElemento(document.getElementById('elemento').value);"><!--Na função quando clicar, ele filtra o valor de Id do campo, e popula o 
+			parametro da função-->
+		<input type="button" name="Retirar" value="Tirar da pilha" class="button"
+			onClick="tirarElemento();">
+	</form>
+		<div id="conteudo">
+		</div>
+
+</body>
+</html>
