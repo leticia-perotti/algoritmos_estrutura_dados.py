@@ -1,8 +1,8 @@
 import random
 
-def cenario1(lista):    
-    lista = random.shuffle(lista)
-    return lista
+def cenario1(lista): 
+    lista2 = random.sample(lista, len(lista))
+    return lista2
 
 def cenario2(qtdPosicoes): 
     listaRandom = [] * qtdPosicoes
@@ -19,7 +19,5 @@ def cenario3(lista):
 def cenario4(lista):
     lista.sort(reverse=True)
     return lista
-def sample_function():
-    return 0.5
 
 lista = [0,1,2,3,4,5,6,7,8,9,10]
